@@ -1,0 +1,6 @@
+streamlit
+numpy
+matplotlib
+colour-science
+Pillow
+streamlit-authenticator
