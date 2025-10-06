@@ -56,13 +56,7 @@ def check_password():
         )
         
         # Help information
-        with st.expander("🔧 Setup Information"):
-            st.markdown("""
-            **For Administrators:**
-            - Create `.streamlit/secrets.toml` with: `password = "your_password"`
-            - Or set environment variable: `CIE_APP_PASSWORD`
-            - Current setup: Using default password
-            """)
+       
         
         st.markdown("---")
         return False
