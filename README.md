@@ -21,85 +21,52 @@ An interactive web application for visualizing and comparing LED color specifica
 
 credentials for access: " Rohit123 "
 
-📖 How It Works
-🎨 The Science Behind
-The CIE 1931 chromaticity diagram is a fundamental color space that represents all colors visible to the human eye. Our simulator:
+## 💡 Usage Guide
 
-Generates the color map mathematically using color science principles
+### Single LED Analysis
+| Step | Action | Result |
+|------|--------|--------|
+| 1 | Set "Number of LED sets" to 1 | Single analysis mode |
+| 2 | Enter (x,y) coordinates | LED specification input |
+| 3 | View color gamut polygon | Visual representation |
+| 4 | Analyze centroid & area | Quantitative metrics |
 
-Converts coordinates to actual visible colors using colour-science library
+### Multiple LED Comparison
+| Step | Action | Result |
+|------|--------|--------|
+| 1 | Choose 2-6 LED sets | Comparison mode activated |
+| 2 | Name each set | Easy identification |
+| 3 | Enter all coordinates | Complete dataset |
+| 4 | Compare visual overlap | Qualitative analysis |
+| 5 | Use distance matrix | Quantitative comparison |
 
-Plots LED specifications as polygons for visual comparison
+### Display Controls
+| Option | Purpose | Best For |
+|--------|---------|----------|
+| 🔵 Fill Polygons | Color area filling | Single LED views |
+| 📏 Show Borders | Outline display | Multi-LED comparison |
+| 🔴 Show Points | Coordinate markers | Detailed inspection |
+| ⭐ Show Centroids | Average position | Quick comparison |
 
-Calculates metrics for professional analysis
+## 🏭 Industry Applications
 
-User Input (x,y coordinates)
-        ↓
-CIE xyY Color Space
-        ↓
-xyY_to_XYZ() → Human Vision Model
-        ↓
-XYZ_to_sRGB() → Computer Colors
-        ↓
-Matplotlib Display → Visual Diagram
+### LED Manufacturing
+| Application | Description | Benefit |
+|-------------|-------------|---------|
+| 🏭 Quality Control | Color consistency checking | Reduced rejects |
+| 📋 Specification Verify | Against target gamuts | Standards compliance |
+| 🔄 Batch Comparison | Production run analysis | Process optimization |
 
-📊 Key Metrics Calculated
-Centroid: Average color point of LED specification
+### Display Engineering
+| Application | Description | Benefit |
+|-------------|-------------|---------|
+| 🎨 Gamut Analysis | Display color performance | Product optimization |
+| ⚡ Tech Comparison | OLED vs LCD vs QLED | Technology selection |
+| ✅ Color Accuracy | Standard validation | Quality assurance |
 
-Polygon Area: Color gamut coverage
-
-Distance Matrix: Differences between multiple LEDs
-
-Color Purity: How saturated the colors are
-
-💡 Usage Guide
-Single LED Analysis
-Set "Number of LED sets" to 1
-
-Enter your LED's (x,y) coordinates
-
-View the color gamut polygon on the diagram
-
-Analyze centroid position and area metrics
-
-Multiple LED Comparison
-Choose 2-6 LED sets to compare
-
-Name each set meaningfully (e.g., "Samsung QLED", "LG OLED")
-
-Enter coordinates for each specification
-
-Compare visual overlap and centroid distances
-
-Use the distance matrix for quantitative analysis
-
-Display Options
-Fill Polygons: Show filled color areas
-
-Show Borders: Display polygon outlines
-
-Show Points: Plot individual coordinate points
-
-Show Centroids: Mark average color points
-
-🏭 Industry Applications
-LED Manufacturing
-Quality control of color consistency
-
-Specification verification against targets
-
-Batch-to-batch comparison
-
-Display Engineering
-Color gamut analysis for displays
-
-OLED vs LCD technology comparison
-
-Color accuracy validation
-
-Research & Development
-New material color performance
-
-Competitor product analysis
-
-Standard compliance checking (DCI-P3, Rec. 709, etc.)
+### R&D Applications
+| Application | Description | Benefit |
+|-------------|-------------|---------|
+| 🔬 Material Testing | New LED materials | Innovation validation |
+| 📊 Competitor Analysis | Market comparison | Competitive advantage |
+| 🎯 Standard Compliance | DCI-P3, Rec. 709, etc. | Industry compliance |
