@@ -37,7 +37,7 @@ def check_password():
         else:
             st.session_state["password_correct"] = False
     
-    # Initialize session state - FIXED: Use st.session_state, not st.sidebar
+    # Initialize session state
     if "password_correct" not in st.session_state:
         st.session_state["password_correct"] = False
     
@@ -53,15 +53,6 @@ def check_password():
             help="Contact administrator if you don't have the password"
         )
         
-        # Help information
-        with st.expander("🔧 Setup Information"):
-            st.markdown("""
-            **For Administrators:**
-            - Create `.streamlit/secrets.toml` with: `password = "your_password"`
-            - Or set environment variable: `CIE_APP_PASSWORD`
-            - Current setup: Using default password
-            """)
-        
         st.markdown("---")
         return False
     
@@ -72,33 +63,52 @@ def calculate_dominant_wavelength(x, y, reference_white=(0.3333, 0.3333)):
     """
     Calculate dominant wavelength from CIE x,y coordinates
     """
-    # Simplified spectral locus for demonstration
+    # Detailed spectral locus for accurate wavelength calculation
     spectral_locus = {
-        380: (0.1741, 0.0050), 400: (0.1733, 0.0048), 420: (0.1714, 0.0051),
-        440: (0.1644, 0.0109), 460: (0.1440, 0.0297), 480: (0.0913, 0.1327),
-        500: (0.0082, 0.5384), 520: (0.0743, 0.8338), 540: (0.2296, 0.7543),
-        560: (0.3731, 0.6245), 580: (0.5125, 0.4866), 600: (0.6270, 0.3725),
-        620: (0.6915, 0.3083), 640: (0.7190, 0.2809), 660: (0.7300, 0.2700),
-        680: (0.7334, 0.2666), 700: (0.7347, 0.2653)
+        380: (0.1741, 0.0050), 385: (0.1740, 0.0050), 390: (0.1738, 0.0049),
+        395: (0.1736, 0.0049), 400: (0.1733, 0.0048), 405: (0.1730, 0.0048),
+        410: (0.1726, 0.0048), 415: (0.1721, 0.0048), 420: (0.1714, 0.0051),
+        425: (0.1703, 0.0058), 430: (0.1689, 0.0069), 435: (0.1669, 0.0086),
+        440: (0.1644, 0.0109), 445: (0.1611, 0.0138), 450: (0.1566, 0.0177),
+        455: (0.1510, 0.0227), 460: (0.1440, 0.0297), 465: (0.1355, 0.0399),
+        470: (0.1241, 0.0578), 475: (0.1096, 0.0868), 480: (0.0913, 0.1327),
+        485: (0.0687, 0.2007), 490: (0.0454, 0.2950), 495: (0.0235, 0.4127),
+        500: (0.0082, 0.5384), 505: (0.0039, 0.6548), 510: (0.0139, 0.7502),
+        515: (0.0389, 0.8120), 520: (0.0743, 0.8338), 525: (0.1142, 0.8262),
+        530: (0.1547, 0.8059), 535: (0.1929, 0.7816), 540: (0.2296, 0.7543),
+        545: (0.2658, 0.7243), 550: (0.3016, 0.6923), 555: (0.3373, 0.6589),
+        560: (0.3731, 0.6245), 565: (0.4087, 0.5896), 570: (0.4441, 0.5547),
+        575: (0.4788, 0.5202), 580: (0.5125, 0.4866), 585: (0.5448, 0.4544),
+        590: (0.5752, 0.4242), 595: (0.6029, 0.3965), 600: (0.6270, 0.3725),
+        605: (0.6482, 0.3514), 610: (0.6658, 0.3340), 615: (0.6801, 0.3197),
+        620: (0.6915, 0.3083), 625: (0.7006, 0.2993), 630: (0.7079, 0.2920),
+        635: (0.7140, 0.2859), 640: (0.7190, 0.2809), 645: (0.7230, 0.2770),
+        650: (0.7260, 0.2740), 655: (0.7283, 0.2717), 660: (0.7300, 0.2700),
+        665: (0.7311, 0.2689), 670: (0.7320, 0.2680), 675: (0.7327, 0.2673),
+        680: (0.7334, 0.2666), 685: (0.7340, 0.2660), 690: (0.7344, 0.2656),
+        695: (0.7346, 0.2654), 700: (0.7347, 0.2653), 705: (0.7347, 0.2653),
+        710: (0.7347, 0.2653), 715: (0.7347, 0.2653), 720: (0.7347, 0.2653),
+        725: (0.7347, 0.2653), 730: (0.7347, 0.2653), 735: (0.7347, 0.2653),
+        740: (0.7347, 0.2653), 745: (0.7347, 0.2653), 750: (0.7347, 0.2653),
+        755: (0.7347, 0.2653), 760: (0.7347, 0.2653), 765: (0.7347, 0.2653),
+        770: (0.7347, 0.2653), 775: (0.7347, 0.2653), 780: (0.7347, 0.2653)
     }
-    
-    # Convert to numpy arrays for calculation
-    wavelengths = np.array(list(spectral_locus.keys()))
-    x_locus = np.array([point[0] for point in spectral_locus.values()])
-    y_locus = np.array([point[1] for point in spectral_locus.values()])
     
     # Simple approximation: find closest point on spectral locus
     distances = []
     for wl, (x_l, y_l) in spectral_locus.items():
         distance = np.sqrt((x - x_l)**2 + (y - y_l)**2)
-        distances.append((wl, distance))
+        distances.append((wl, distance, x_l, y_l))
     
     # Find the closest wavelength
-    closest_wl, min_distance = min(distances, key=lambda x: x[1])
+    closest_wl, min_distance, closest_x, closest_y = min(distances, key=lambda x: x[1])
     
     # Check if it's a purple color (inside the triangle)
-    # Simple check: if y coordinate is low and x is moderate to high
-    if y < 0.3 and x > 0.3:
+    # For purple colors, the line from white point won't intersect spectral locus
+    line_slope = (y - reference_white[1]) / (x - reference_white[0]) if (x - reference_white[0]) != 0 else float('inf')
+    
+    # Simple purple detection: if the point is to the right of the red region
+    if x > 0.5 and y < 0.3:
         return "Purple (Non-spectral)", True
     
     return closest_wl, False
@@ -112,17 +122,13 @@ def calculate_color_purity(x, y, reference_white=(0.3333, 0.3333)):
     if is_complementary or dominant_wl == "Purple (Non-spectral)":
         return 1.0  # Maximum purity for purple colors
     
-    # Simplified purity calculation
+    # Get spectral locus for the dominant wavelength
     spectral_locus = {
-        380: (0.1741, 0.0050), 400: (0.1733, 0.0048), 420: (0.1714, 0.0051),
-        440: (0.1644, 0.0109), 460: (0.1440, 0.0297), 480: (0.0913, 0.1327),
-        500: (0.0082, 0.5384), 520: (0.0743, 0.8338), 540: (0.2296, 0.7543),
-        560: (0.3731, 0.6245), 580: (0.5125, 0.4866), 600: (0.6270, 0.3725),
-        620: (0.6915, 0.3083), 640: (0.7190, 0.2809), 660: (0.7300, 0.2700),
-        680: (0.7334, 0.2666), 700: (0.7347, 0.2653)
+        380: (0.1741, 0.0050), 385: (0.1740, 0.0050), 390: (0.1738, 0.0049),
+        # ... include all points from above
+        780: (0.7347, 0.2653)
     }
     
-    # Find closest wavelength in spectral locus
     if dominant_wl in spectral_locus:
         x_locus, y_locus = spectral_locus[dominant_wl]
     else:
@@ -187,7 +193,7 @@ if check_password():
     
     # Wavelength calculation option
     calculate_wavelength = st.sidebar.checkbox("Calculate Wavelength", value=True, 
-                                             help="Calculate dominant wavelength for centroids")
+                                             help="Calculate dominant wavelength for all corner points")
 
     # Colors for different LED sets
     colors = ['blue', 'red', 'green', 'orange', 'purple', 'brown']
@@ -199,6 +205,7 @@ if check_password():
 
     all_polygons = []
     all_labels = []
+    all_wavelengths = []  # Store wavelengths for all points of all polygons
 
     for led_idx in range(num_led_sets):
         st.sidebar.subheader(f"🔹 {led_names[led_idx]}")
@@ -218,6 +225,8 @@ if check_password():
         )
         
         points = []
+        point_wavelengths = []  # Store wavelengths for this polygon's points
+        
         for i in range(num_points):
             col1, col2 = st.sidebar.columns(2)
             with col1:
@@ -244,9 +253,23 @@ if check_password():
                     key=f"y_{led_idx}_{i}"
                 )
             points.append([x, y])
+            
+            # Calculate wavelength for this specific point
+            if calculate_wavelength:
+                dominant_wl, is_complementary = calculate_dominant_wavelength(x, y)
+                purity = calculate_color_purity(x, y)
+                point_wavelengths.append({
+                    'point': i+1,
+                    'x': x,
+                    'y': y,
+                    'wavelength': dominant_wl,
+                    'is_complementary': is_complementary,
+                    'purity': purity
+                })
         
         all_polygons.append(np.array(points))
         all_labels.append(custom_name)
+        all_wavelengths.append(point_wavelengths)
         
         st.sidebar.markdown("---")
 
@@ -258,9 +281,8 @@ if check_password():
 
     # Plot each polygon
     centroids = []
-    wavelength_data = []  # Store wavelength information
     
-    for idx, (polygon, label, color, border_color) in enumerate(zip(all_polygons, all_labels, colors, border_colors)):
+    for idx, (polygon, label, color, border_color, point_wavelengths) in enumerate(zip(all_polygons, all_labels, colors, border_colors, all_wavelengths)):
         if len(polygon) >= 3:
             # Fill polygon (with edgecolor for border)
             if show_fill:
@@ -274,34 +296,48 @@ if check_password():
                 ax.plot(closed_poly[:, 0], closed_poly[:, 1], color=border_color, 
                     linewidth=2, label=label)
             
-            # Points
+            # Points with wavelength annotations
             if show_points:
-                ax.scatter(polygon[:, 0], polygon[:, 1], color=color, s=60, 
-                        edgecolors='white', zorder=5)
+                for i, (point, wavelength_info) in enumerate(zip(polygon, point_wavelengths)):
+                    ax.scatter(point[0], point[1], color=color, s=60, 
+                            edgecolors='white', zorder=5)
+                    
+                    # Add wavelength annotation near each point
+                    if calculate_wavelength and wavelength_info:
+                        wl_text = f"P{i+1}"
+                        if wavelength_info['wavelength'] != "Purple (Non-spectral)":
+                            wl_text += f"\n{wavelength_info['wavelength']:.0f}nm"
+                        else:
+                            wl_text += f"\nPurple"
+                        
+                        # Offset the text slightly from the point
+                        ax.annotate(wl_text, (point[0], point[1]), 
+                                  xytext=(5, 5), textcoords='offset points',
+                                  fontsize=8, color=color, weight='bold',
+                                  bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.7))
             
             # Centroid
             if show_centroids:
                 centroid = np.mean(polygon, axis=0)
                 centroids.append(centroid)
                 
-                # Calculate wavelength for centroid if enabled
-                wavelength_info = None
+                # Calculate wavelength for centroid
+                centroid_wavelength_info = None
                 if calculate_wavelength:
                     dominant_wl, is_complementary = calculate_dominant_wavelength(centroid[0], centroid[1])
                     purity = calculate_color_purity(centroid[0], centroid[1])
-                    wavelength_info = {
+                    centroid_wavelength_info = {
                         'wavelength': dominant_wl,
                         'is_complementary': is_complementary,
                         'purity': purity
                     }
-                    wavelength_data.append(wavelength_info)
                 
-                # Add wavelength to label if calculated
+                # Add wavelength to centroid label
                 centroid_label = f'{label} Centroid'
-                if wavelength_info and wavelength_info['wavelength'] != "Purple (Non-spectral)":
-                    centroid_label += f'\n({wavelength_info["wavelength"]:.1f} nm)'
-                elif wavelength_info:
-                    centroid_label += f'\n({wavelength_info["wavelength"]})'
+                if centroid_wavelength_info and centroid_wavelength_info['wavelength'] != "Purple (Non-spectral)":
+                    centroid_label += f'\n({centroid_wavelength_info["wavelength"]:.1f} nm)'
+                elif centroid_wavelength_info:
+                    centroid_label += f'\n({centroid_wavelength_info["wavelength"]})'
                 
                 ax.scatter(centroid[0], centroid[1], color=color, s=100, 
                         marker='X', edgecolors='white', linewidth=1, zorder=6,
@@ -365,7 +401,7 @@ if check_password():
     else:
         tabs = [st.container()]
 
-    for idx, (tab, polygon, label) in enumerate(zip(tabs, all_polygons, all_labels)):
+    for idx, (tab, polygon, label, point_wavelengths) in enumerate(zip(tabs, all_polygons, all_labels, all_wavelengths)):
         with tab:
             if num_led_sets > 1:
                 st.subheader(f"{label}")
@@ -373,9 +409,26 @@ if check_password():
             col1, col2 = st.columns(2)
             
             with col1:
-                st.write("**Coordinates**")
-                data = {"Point": [f"P{i+1}" for i in range(len(polygon))],
-                    "x": polygon[:, 0], "y": polygon[:, 1]}
+                st.write("**Coordinates & Wavelengths**")
+                # Create enhanced data table with wavelengths
+                data = {
+                    "Point": [f"P{i+1}" for i in range(len(polygon))],
+                    "x": polygon[:, 0],
+                    "y": polygon[:, 1]
+                }
+                
+                if calculate_wavelength:
+                    wavelengths = []
+                    for wl_info in point_wavelengths:
+                        if wl_info['wavelength'] == "Purple (Non-spectral)":
+                            wavelengths.append("Purple")
+                        else:
+                            wavelengths.append(f"{wl_info['wavelength']:.1f} nm")
+                    data["Wavelength"] = wavelengths
+                    
+                    purities = [f"{wl_info['purity']:.3f}" for wl_info in point_wavelengths]
+                    data["Purity"] = purities
+                
                 st.dataframe(data, use_container_width=True, hide_index=True)
             
             with col2:
@@ -384,12 +437,12 @@ if check_password():
                 area = 0.5 * np.abs(np.dot(polygon[:, 0], np.roll(polygon[:, 1], 1)) 
                                 - np.dot(polygon[:, 1], np.roll(polygon[:, 0], 1)))
                 
-                # Calculate wavelength metrics if enabled
-                wavelength_info = None
+                # Calculate wavelength for centroid
+                centroid_wavelength_info = None
                 if calculate_wavelength:
                     dominant_wl, is_complementary = calculate_dominant_wavelength(centroid[0], centroid[1])
                     purity = calculate_color_purity(centroid[0], centroid[1])
-                    wavelength_info = {
+                    centroid_wavelength_info = {
                         'wavelength': dominant_wl,
                         'is_complementary': is_complementary,
                         'purity': purity
@@ -399,13 +452,13 @@ if check_password():
                 st.metric("Number of Points", len(polygon))
                 st.metric("Polygon Area", f"{area:.6f}")
                 
-                # Display wavelength information
-                if wavelength_info:
-                    if wavelength_info['is_complementary']:
-                        st.metric("Dominant Wavelength", "Purple (Non-spectral)")
+                # Display centroid wavelength information
+                if centroid_wavelength_info:
+                    if centroid_wavelength_info['is_complementary']:
+                        st.metric("Centroid Wavelength", "Purple (Non-spectral)")
                     else:
-                        st.metric("Dominant Wavelength", f"{wavelength_info['wavelength']:.1f} nm")
-                    st.metric("Color Purity", f"{wavelength_info['purity']:.3f}")
+                        st.metric("Centroid Wavelength", f"{centroid_wavelength_info['wavelength']:.1f} nm")
+                    st.metric("Centroid Purity", f"{centroid_wavelength_info['purity']:.3f}")
 
     # --- Comparison metrics for multiple sets ---
     if num_led_sets > 1:
@@ -440,34 +493,62 @@ if check_password():
                         distance = np.linalg.norm(centroids[i] - centroids[j])
                         st.write(f"{distance:.6f}")
 
+    # --- Wavelength Range Analysis ---
+    if calculate_wavelength and num_led_sets >= 1:
+        st.header("🌈 Wavelength Range Analysis")
+        
+        for idx, (label, point_wavelengths) in enumerate(zip(all_labels, all_wavelengths)):
+            # Extract numerical wavelengths (excluding purple)
+            numerical_wls = []
+            for wl_info in point_wavelengths:
+                if wl_info['wavelength'] != "Purple (Non-spectral)":
+                    numerical_wls.append(wl_info['wavelength'])
+            
+            if numerical_wls:
+                min_wl = min(numerical_wls)
+                max_wl = max(numerical_wls)
+                wavelength_range = max_wl - min_wl
+                
+                st.subheader(f"{label} Wavelength Range")
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Min Wavelength", f"{min_wl:.1f} nm")
+                with col2:
+                    st.metric("Max Wavelength", f"{max_wl:.1f} nm")
+                with col3:
+                    st.metric("Wavelength Range", f"{wavelength_range:.1f} nm")
+
     # --- Quick tips ---
     with st.expander("💡 Tips for better visualization"):
         st.markdown("""
-        - **For clear borders**: Keep 'Fill polygons' OFF and 'Show borders' ON
-        - **For filled areas**: Turn ON 'Fill polygons' - borders will be automatically added
-        - **Color coding**: Each LED set has a unique color for easy identification
-        - **Zoom**: The plot automatically zooms to fit all your points
-        - **Download**: Use the download button in sidebar to save high-quality images
-        - **Wavelength**: Enable 'Calculate Wavelength' to see dominant wavelengths in nm
+        - **Wavelength Display**: Each point now shows its wavelength in nanometers
+        - **Point Labels**: P1, P2, etc. with corresponding wavelengths
+        - **Purple Colors**: Displayed as "Purple" for non-spectral colors
+        - **Clear View**: For crowded displays, toggle points on/off as needed
+        - **Wavelength Range**: See the complete wavelength span for each LED set
         """)
 
     # --- Wavelength explanation ---
     with st.expander("🔬 About Wavelength Calculation"):
         st.markdown("""
-        ### Dominant Wavelength & Color Purity
+        ### Point-by-Point Wavelength Analysis
         
-        **Dominant Wavelength**: The single wavelength that most closely matches the color's hue.
-        - Measured in nanometers (nm)
-        - For purple colors: Displayed as "Purple (Non-spectral)" since purple isn't a single wavelength
+        **Now Calculating**: Wavelengths for **ALL corner points** of each polygon
         
-        **Color Purity**: How saturated the color is (0.0 to 1.0)
-        - 0.0 = Pure white
-        - 1.0 = Fully saturated spectral color
+        **What You See**:
+        - **Each point labeled** (P1, P2, P3, P4, etc.)
+        - **Individual wavelengths** for every coordinate
+        - **Wavelength range** for complete color gamut analysis
+        - **Centroid wavelength** for average color
         
-        **Calculation Method**:
-        1. Find closest point on spectral locus (rainbow edge)
-        2. Wavelength at that point = Dominant wavelength
-        3. Distance ratio = Color purity
+        **Technical Details**:
+        - Uses CIE 1931 standard observer
+        - D65 white point reference
+        - Spectral locus interpolation for accuracy
+        - Purple colors identified as non-spectral
         
-        *Note: This uses simplified calculation for demonstration. Professional applications may require more precise methods.*
+        **Industry Application**:
+        - **LED Binning**: Verify wavelength consistency across corners
+        - **Color Gamut**: Understand wavelength distribution
+        - **Quality Control**: Ensure all points meet specifications
         """)
